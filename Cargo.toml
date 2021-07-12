@@ -1,0 +1,12 @@
+[package]
+name = "streamlet-rust"
+version = "0.1.0"
+authors = ["Paweł Górski <dev.baymax42@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+log = "0.4"
+simple_logger = "1.11"
+ring = "0.16"
