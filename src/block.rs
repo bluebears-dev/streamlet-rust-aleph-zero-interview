@@ -1,35 +1,15 @@
-use ring::digest::{Context, Digest, SHA512};
-
-use crate::node::Epoch;
+use crate::{node::Epoch, utils::{BlockHash, sha512_digest}};
 
 const INIT_EPOCH: Epoch = 0;
-pub type BlockHash = [u8; 64];
 
-fn sha512_digest(data: &[u8]) -> BlockHash {
-    let mut context = Context::new(&SHA512);
-    context.update(data);
-    digest_to_string(context.finish())
-}
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 pub struct Block {
     pub parent_digest: BlockHash,
     pub transaction: BlockHash,
     pub creation_epoch: Epoch,
 
     pub is_notarized: bool,
-}
-
-pub fn digest_to_string(hash: Digest) -> BlockHash {
-    let mut str = String::from("");
-    for i in hash.as_ref() {
-        str.push(*i as char)
-    }
-    let mut res: [u8; 64] = [0; 64];
-    for i in 0..64 {
-        res[i] = str.chars().nth(i).unwrap() as u8;
-    } 
-    res
 }
 
 impl Block {
