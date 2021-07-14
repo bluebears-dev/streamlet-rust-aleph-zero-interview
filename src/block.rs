@@ -1,7 +1,6 @@
-use crate::{node::Epoch, utils::{BlockHash, sha512_digest}};
+use crate::{digest::{BlockHash, sha512_digest}, node::Epoch};
 
-const INIT_EPOCH: Epoch = 0;
-
+pub const INIT_EPOCH: Epoch = 0;
 
 #[derive(Copy, Clone, Debug)]
 pub struct Block {

@@ -1,4 +1,4 @@
-use crate::{block::{Block}, node::NodeIdentifier, utils::BlockHash};
+use crate::{block::{Block}, digest::BlockHash, node::NodeIdentifier};
 
 
 #[derive(Copy, Clone, Debug)]

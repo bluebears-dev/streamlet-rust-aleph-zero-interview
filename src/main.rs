@@ -7,15 +7,17 @@ use node::{BaseNode, NodeIdentifier};
 use log::{info, warn};
 use simple_logger::SimpleLogger;
 
-use crate::node::Node;
+use block::INIT_EPOCH;
+
+use crate::node::honest_node::HonestNode;
 
 pub mod message;
 pub mod node;
 pub mod block;
-pub mod utils;
+pub mod digest;
 
 fn run_network<N: BaseNode>(mut nodes_map: Vec<N>) {
-    let mut current_epoch: u64 = 1;
+    let mut current_epoch: u64 = INIT_EPOCH + 1;
     let mut message_queue = VecDeque::<Message>::new();
 
     loop {
@@ -23,6 +25,7 @@ fn run_network<N: BaseNode>(mut nodes_map: Vec<N>) {
             node.at_time(current_epoch, &mut message_queue);
         }
 
+        // In normal environment this is probably a bad idea - we're sure that nodes don't echo infinitely their messages
         while message_queue.len() > 0 {
             if let Some(message) = message_queue.pop_front() {
                 if let Some(node) = nodes_map.get_mut(message.to as usize) {
@@ -48,7 +51,7 @@ fn main() {
         let node_count: NodeIdentifier = node_count_arg.parse().unwrap();
         info!(target: "main", "Creating '{:?}' nodes", node_count);
         let id_range = 0..node_count;
-        let nodes: Vec<Node> = id_range.map(|id| Node::new(id, node_count)).collect();
+        let nodes: Vec<HonestNode> = id_range.map(|id| HonestNode::new(id, node_count)).collect();
 
         run_network(nodes);
     }
